@@ -4,9 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>BrewGo | Brews and Grub</title>
+    <!--Moment.js-->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <!--MapBox-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 </head>
+
 <body>
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4 font-weight-bold text-left">BrewGo</h1>
+        <p class="lead font-weight-bold text-left">Find local breweries and grub</p>
+        <div class="search-bar">
+            <form>
+                <div class="location-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" placeholder="Tampa, Florida...">
+                </div>
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+        <p class="font-weight-bold text-center">Enter location, get buzzed, eat food</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" id="breweries">
+                <!-- JS will append brewery cards here, CSS will align them into a grid -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+            <h2 class="recommended-cities-header">Featured Craft Beer Cities</h2> 
+            </div>
+        </div>
+        <div class="row" id="recommended-cities">
+            <div class="col-sm-3">
+                <div class="city-container">
+                    <img src="./assets/images/tampa.jpg">
+                    <div class="recommended">
+                        <h4 class="city">Tampa</h4>
+                        <p>Florida</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="city-container">
+                    <img src="./assets/images/raleigh.jpg">
+                    <div class="recommended">
+                        <h4 class="city">Raleigh</h4>
+                        <p>North Carolina</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="city-container">
+                    <img src="./assets/images/grandrapids.jpg">
+                    <div class="recommended">
+                        <h4 class="city">Grand Rapids</h4>
+                        <p>Michigan</p>
+                    </div>
+                </div>
+                </div>
+            <div class="col-sm-3">
+                <div class="city-container">
+                    <img src="./assets/images/portland.jpg">
+                    <div class="recommended">
+                        <h4 class="city">Portland</h4>
+                        <p>Oregon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <!--Modal card layout will go here...JS code will append info from APIs-->
     
+    <br><br>
+    <footer class="footer bg-white">
+        <div class="container">
+            <span>Alan Ford | Bryan Wise | Joel Scott | © 2020</a></span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/61f75f2d8a.js" crossorigin="anonymous"></script>
+    <script src="./assets/javascript/script.js"></script>
 </body>
 </html>
