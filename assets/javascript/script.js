@@ -4,6 +4,7 @@ let city = "";
 let state = "";
 let displayCity = "";
 let displayCount = 9;
+let header;
 const states = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -76,13 +77,14 @@ function searchBreweryDB() {
         console.log(response.length);
         var breweries = ('<div class="col-lg-12" id="breweries">');
         if (response.length > 1) {
-            var header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '. </h2>');
+            header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '. </h2>');
         }
-        else if (breweries.length == 0) {
-            var header = $('<h2 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h2>');
+        //not working>
+        if (breweries.length === 0) {
+            header = $('<h2 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h2>');
         }
         else {
-            var header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + '. </h2>');
+            header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + '. </h2>');
         }
         $('#brewery-list').append(header, breweries);
         for (var i = 0; i < displayCount; i++)  {
