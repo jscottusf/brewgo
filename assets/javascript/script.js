@@ -131,6 +131,7 @@ $('form').on('submit', function(event) {
     $('html, body').animate({
         scrollTop: $("#brewery-list").offset().top - 50
    }, 500);
+   $('.search-input').val('');
 });
 
 $('.city-container').on('click', function(event) {
