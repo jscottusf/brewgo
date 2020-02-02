@@ -76,19 +76,20 @@ function searchBreweryDB() {
     }).then(function(response) {
         console.log(response.length);
         var breweries = ('<div class="col-lg-12" id="breweries">');
+        var moreBrewsButton = $('<button type="button" class="btn btn-lg m-3 btn-info" id="more-beer">More breweries</button>');
         if (response.length > 1) {
-            header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '. </h2>');
+            header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '</h2>');
         }
         //not working>
-        if (breweries.length === 0) {
+        else if (breweries.length === 0) {
             header = $('<h2 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h2>');
         }
         else {
-            header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + '. </h2>');
+            header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + ' </h2>');
         }
-        $('#brewery-list').append(header, breweries);
+        $('#brewery-list').append(header, breweries, moreBrewsButton);
         for (var i = 0; i < displayCount; i++)  {
-            var brewCard = $('<div class="bewery-' + i + '">')
+            var brewCard = $('<div class="mx-0 my-2 bewery-' + i + '">')
             $('#breweries').append(brewCard);
             var breweryName = $('<h3>' + response[i].name + '</h3>');
             console.log(response[i].name);
@@ -100,12 +101,14 @@ function searchBreweryDB() {
 function clearBreweries() {
     $('#breweries').remove();
     $('#brewery-header').remove();
+    $('#more-beer').remove();
 }
 
 //on form click
 $('form').on('submit', function(event) {
     event.preventDefault();
     clearBreweries();
+    displayCount = 9;
     searchLocation = $('.search-input').val().trim();
     cityAndState = searchLocation.split(',');
     displayCity = cityAndState[0];
@@ -122,13 +125,33 @@ $('form').on('submit', function(event) {
     else if (cityAndState[1] != undefined) {
         state = cityAndState[1].trim().split(' ').join('%20');
     }
-    
-    
-    
     //other code will go here
     searchBreweryDB();
     //scroll down to #breweries <div>
     $('html, body').animate({
         scrollTop: $("#brewery-list").offset().top - 50
    }, 500);
+});
+
+$('.city-container').on('click', function(event) {
+    event.preventDefault();
+    clearBreweries();
+    displayCount = 9;
+    city = $(this).attr('data-city');
+    state = $(this).attr('data-state');
+    displayCity = $(this).attr('id');
+    searchBreweryDB();
+    $('html, body').animate({
+        scrollTop: $("#brewery-list").offset().top - 50
+   }, 500);
+});
+
+$('html, body').on('click', '#more-beer', function(event) {
+    event.preventDefault();
+    clearBreweries();
+    city; 
+    state;
+    displayCity;
+    displayCount += 3;
+    searchBreweryDB();
 })
