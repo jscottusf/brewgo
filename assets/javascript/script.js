@@ -1,3 +1,4 @@
+//global variables
 let searchLocation;
 let cityAndState;
 let city = ""; 
@@ -5,6 +6,12 @@ let state = "";
 let displayCity = "";
 let displayCount = 9;
 let header;
+let imageURL;
+let breweryImage = {};
+let images;
+let randomNum;
+var startNum;
+//found online...not yet being used. Want to write a function that converts state abbreviation to full state name (to increase user friendliness)
 const states = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -66,9 +73,15 @@ const states = {
     "WI": "Wisconsin",
     "WY": "Wyoming"
 }
+//firebase...in keys.js
+firebaseConfig;
+//Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+database = firebase.database();
 
+//search breweryDB API
 function searchBreweryDB() {
-    var queryURL = 'https://api.openbrewerydb.org/breweries?by_city=' + city + '&by_state=' + state;
+    var queryURL = 'https://api.openbrewerydb.org/breweries?per_page=50&by_city=' + city + '&by_state=' + state + '&sort=type,-name';
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -82,22 +95,35 @@ function searchBreweryDB() {
         }
         //not working>
         else if (breweries.length === 0) {
-            header = $('<h2 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h2>');
+            header = $('<h1 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h1>');
         }
         else {
             header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + ' </h2>');
         }
         $('#brewery-list').append(header, breweries, moreBrewsButton);
+        //adds one to random image, as there are 100 (0-99) images stored on firebase
+        //done like this to keep images consistent, otherwise it keeps generating a new image when new breweries are added. could make user confused.
+        startNum = randomNum;
         for (var i = 0; i < displayCount; i++)  {
-            var brewCard = $('<div class="mx-0 my-2 bewery-' + i + '">')
-            $('#breweries').append(brewCard);
-            var breweryName = $('<h3>' + response[i].name + '</h3>');
-            console.log(response[i].name);
-            $(brewCard).append(breweryName);
+            if(response[i]) {
+                var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container">');
+                $('#breweries').append(brewCard);
+                var zip = response[i].postal_code.substr(0,5);
+                var addressDiv = $('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + response[i].street + '<br>' + response[i].city + ', ' + response[i].state + ' ' + zip + '</div>')
+                var breweryImg = $('<img id="random-img" src="' + images[startNum].url + '" alt="brewery logo">')
+                var breweryName = $('<h3 id="brewery-name">' + response[i].name + '</h3>');
+                $(brewCard).append(breweryName, addressDiv, breweryImg);
+                startNum += 1;
+                //loop through array
+                if (startNum > 99) {
+                    startNum = 0;
+                } 
+            }
         }
-    })
+    });
 }
 
+//reset display
 function clearBreweries() {
     $('#breweries').remove();
     $('#brewery-header').remove();
@@ -109,6 +135,8 @@ $('form').on('submit', function(event) {
     event.preventDefault();
     clearBreweries();
     displayCount = 9;
+    //pulls random number for images from firebase
+    randomNum = Math.floor(Math.random() * 100);
     searchLocation = $('.search-input').val().trim();
     cityAndState = searchLocation.split(',');
     displayCity = cityAndState[0];
@@ -134,9 +162,12 @@ $('form').on('submit', function(event) {
    $('.search-input').val('');
 });
 
+//on feautured cities click
 $('.city-container').on('click', function(event) {
     event.preventDefault();
     clearBreweries();
+    //pulls random number for images from firebase
+    randomNum = Math.floor(Math.random() * 100);
     displayCount = 9;
     city = $(this).attr('data-city');
     state = $(this).attr('data-state');
@@ -147,6 +178,7 @@ $('.city-container').on('click', function(event) {
    }, 500);
 });
 
+//add more breweries from same city
 $('html, body').on('click', '#more-beer', function(event) {
     event.preventDefault();
     clearBreweries();
@@ -156,3 +188,18 @@ $('html, body').on('click', '#more-beer', function(event) {
     displayCount += 3;
     searchBreweryDB();
 })
+
+//I ran a bing images api search and stored 100 generic brewery object image urls in and array called images on firebase
+//There images generate randomly at the top of each brewery card
+database.ref().on('value', function(snapshot) {
+    if (snapshot.child('images').exists()) {
+        images = snapshot.val().images;
+        console.log(snapshot.val());
+        }
+    }, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
+    });
+
+if (!Array.isArray(images)) {
+images = [];
+}
