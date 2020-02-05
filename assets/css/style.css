@@ -20,6 +20,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 200px;
+    padding-top: 150px;
 }
 
 /* Search Bar */
@@ -31,7 +32,7 @@ form {
 }
 
 .search-bar {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 100%;
     border-radius: 15px;
     height: 55px;
@@ -182,6 +183,11 @@ form {
 
 .city-container:hover, #card-container:hover {
     cursor: pointer;
+}
+
+#modal-card{
+    border-radius: 15px;
+    width: 600px
 }
 
 /* Footer */
