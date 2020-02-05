@@ -106,7 +106,7 @@ function searchBreweryDB() {
         startNum = randomNum;
         for (var i = 0; i < displayCount; i++)  {
             if(response[i]) {
-                var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container">');
+                var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container" data-toggle="modal" data-target="#info-modal">');
                 $('#breweries').append(brewCard);
                 var zip = response[i].postal_code.substr(0,5);
                 var addressDiv = $('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + response[i].street + '<br>' + response[i].city + ', ' + response[i].state + ' ' + zip + '</div>')
