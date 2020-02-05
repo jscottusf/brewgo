@@ -185,7 +185,7 @@ form {
     cursor: pointer;
 }
 
-#modal-body {
+#modal-card{
     border-radius: 15px;
     width: 600px
 }
