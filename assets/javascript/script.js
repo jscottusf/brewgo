@@ -11,6 +11,8 @@ let breweryImage = {};
 let images;
 let randomNum;
 var startNum;
+let breweries = [];
+let breweryData = {};
 //found online...not yet being used. Want to write a function that converts state abbreviation to full state name (to increase user friendliness)
 const states = {
     "AL": "Alabama",
@@ -87,8 +89,10 @@ function searchBreweryDB() {
         url: queryURL,
         type: "GET", 
     }).then(function(response) {
+        //clear breweryies array
+        breweries = [];
         console.log(response.length);
-        var breweries = ('<div class="col-lg-12" id="breweries">');
+        var breweriesDiv = ('<div class="col-lg-12" id="breweries">');
         var moreBrewsButton = $('<button type="button" class="btn btn-lg m-3 btn-info" id="more-beer">More breweries</button>');
         if (response.length > 1) {
             header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '</h2>');
@@ -100,26 +104,40 @@ function searchBreweryDB() {
         else {
             header = $('<h2 id="brewery-header">There is ' + response.length + ' brewery in ' + displayCity + ' </h2>');
         }
-        $('#brewery-list').append(header, breweries, moreBrewsButton);
+        $('#brewery-list').append(header, breweriesDiv, moreBrewsButton);
         //adds one to random image, as there are 100 (0-99) images stored on firebase
         //done like this to keep images consistent, otherwise it keeps generating a new image when new breweries are added. could make user confused.
         startNum = randomNum;
         for (var i = 0; i < displayCount; i++)  {
             if(response[i]) {
-                var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container" data-toggle="modal" data-target="#info-modal">');
+                //brewery card info
+                var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container" data-number="' + i + '" data-toggle="modal" data-target="#info-modal">');
                 $('#breweries').append(brewCard);
                 var zip = response[i].postal_code.substr(0,5);
                 var addressDiv = $('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + response[i].street + '<br>' + response[i].city + ', ' + response[i].state + ' ' + zip + '</div>')
                 var breweryImg = $('<img id="random-img" src="' + images[startNum].url + '" alt="brewery logo">')
-                var breweryName = $('<h3 id="brewery-name">' + response[i].name + '</h3>');
-                $(brewCard).append(breweryName, addressDiv, breweryImg);
+                var breweryNameH3 = $('<h3 id="brewery-name">' + response[i].name + '</h3>');
+                $(brewCard).append(breweryNameH3, addressDiv, breweryImg);
                 startNum += 1;
                 //loop through array
                 if (startNum > 99) {
                     startNum = 0;
-                } 
+                }
+                //create a data array to use for modal
+                var breweryName = response[i].name;
+                var breweryStreet = response[i].street;
+                var breweryCity = response[i].city;
+                var breweryState = response[i].state;
+                //zip is above
+                var breweryLong = response[i].longitude;
+                var breweryLat = response[i].latitude;
+                var breweryPhone = response[i].phone;
+                var breweryUrl = response[i].website_url;
+                breweryData = {"name": breweryName, "street": breweryStreet, "city": breweryCity, "state": breweryState, "zip": zip, "longitude": breweryLong, "latitude": breweryLat, "phone": breweryPhone, "url": breweryUrl}
+                breweries.push(breweryData);
             }
         }
+        console.log(breweries);
     });
 }
 
@@ -189,6 +207,14 @@ $('html, body').on('click', '#more-beer', function(event) {
     searchBreweryDB();
 })
 
+$('#brewery-list').on('click', '#card-container', function(event) {
+    var dataNum = $(this).attr('data-number');
+    $('#brewery').text(breweries[dataNum].name);
+    $('#address-info').html('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + breweries[dataNum].street + '<br>' + breweries[dataNum].city + ', ' + breweries[dataNum].state + ' ' + breweries[dataNum].zip + '</div>');
+    $('#phone-info').html('<div id="phone"><i class="fas fa-phone"></i>  ' + breweries[dataNum].phone + '</div>')
+    $('#website-info').html('<div id="website"><i class="fab fa-safari"></i>  ' + breweries[dataNum].url + '</div>')
+})
+
 //I ran a bing images api search and stored 100 generic brewery object image urls in and array called images on firebase
 //There images generate randomly at the top of each brewery card
 database.ref().on('value', function(snapshot) {
@@ -203,3 +229,4 @@ database.ref().on('value', function(snapshot) {
 if (!Array.isArray(images)) {
 images = [];
 }
+
