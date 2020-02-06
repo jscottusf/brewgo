@@ -13,7 +13,6 @@ let randomNum;
 var startNum;
 let breweries = [];
 let breweryData = {};
-//found online...not yet being used. Want to write a function that converts state abbreviation to full state name (to increase user friendliness)
 const states = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -81,9 +80,51 @@ firebaseConfig;
 firebase.initializeApp(firebaseConfig);
 database = firebase.database();
 
+//get location based on brewery address...
+//many of the breweryDBs provide coordinates, BUT quite a few don't. This ensures that every brewery location is shown on the map.
+function getLocation(address, city, state, zip) {
+    var locationSearch = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURI(address) + '%20' + encodeURI(city) + '%20' + encodeURI(state) + '%20' + encodeURI(zip) + '.json?access_token=' + mapBoxApi;
+    console.log(locationSearch);
+    $.ajax({
+        url: locationSearch,
+        method: "GET",
+    }).then(function(response) {
+        console.log(response);
+        latitude = response.features[0].center[1];
+        longitude = response.features[0].center[0];
+        mapBox(longitude, latitude);
+    });
+}
+
+//display brewery location on map modal
+function mapBox(long, lat) {
+    //mapbox
+    mapboxgl.accessToken = mapBoxApi;
+    
+    //display map according to event location
+    var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [long, lat],
+    zoom: 13
+    });
+    //display map marker
+    new mapboxgl.Marker().setLngLat([long, lat]).addTo(map);
+    //allows for full screen map
+    map.addControl(new mapboxgl.FullscreenControl());
+    //allows to zoom in and zoom out map
+    map.addControl(new mapboxgl.NavigationControl());
+    map.scrollZoom.disable();
+    //initial map is blurry, so calling resize adjusts blur
+    map.on('load', function() {
+        map.resize();
+    });
+}
+
+
 //search breweryDB API
 function searchBreweryDB() {
-    var queryURL = 'https://api.openbrewerydb.org/breweries?per_page=50&by_city=' + city + '&by_state=' + state + '&sort=type,-name';
+    var queryURL = 'https://api.openbrewerydb.org/breweries?per_page=50&by_city=' + encodeURI(city) + '&by_state=' + encodeURI(state) + '&sort=type,-name';
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -97,8 +138,7 @@ function searchBreweryDB() {
         if (response.length > 1) {
             header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '</h2>');
         }
-        //not working>
-        else if (breweries.length === 0) {
+        else if (response.length === 0) {
             header = $('<h1 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h1>');
         }
         else {
@@ -148,7 +188,15 @@ function clearBreweries() {
     $('#more-beer').remove();
 }
 
+//whatever the user inputs as a city, correct capitalization for display purposes 
+function cityCapitalization(str) {
+    str = str.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+    displayCity = str;
+    return displayCity;
+}
+
 //on form click
+//wrote this before I discovered encodeURI()
 $('form').on('submit', function(event) {
     event.preventDefault();
     clearBreweries();
@@ -157,19 +205,18 @@ $('form').on('submit', function(event) {
     randomNum = Math.floor(Math.random() * 100);
     searchLocation = $('.search-input').val().trim();
     cityAndState = searchLocation.split(',');
-    displayCity = cityAndState[0];
-    city = cityAndState[0].split(' ').join('%20');
+    city = cityAndState[0];
+    //make all letters lowercase and then make each first letter uppercase and return var displayCity;
+    cityCapitalization(city);
     if (cityAndState[1] === undefined) {
         state = "";
     }
-    else if (cityAndState[1].length <= 3) {
-        state = "";
-        //var ref = cityAndState[1].trim();
-        //state = states.ref;
-        //trying to use the state const above to convert abbreviated state name to full state name for search purposes. Keeps coming out as undefined though :( 
+    else if (cityAndState[1].length === 2 || cityAndState[1].length === 3) {
+        var ref = cityAndState[1].trim().toUpperCase();
+        state = states[ref];
     }
-    else if (cityAndState[1] != undefined) {
-        state = cityAndState[1].trim().split(' ').join('%20');
+    else {
+        state = cityAndState[1].trim();
     }
     //other code will go here
     searchBreweryDB();
@@ -208,11 +255,18 @@ $('html, body').on('click', '#more-beer', function(event) {
 })
 
 $('#brewery-list').on('click', '#card-container', function(event) {
+    event.preventDefault();
     var dataNum = $(this).attr('data-number');
+    var areaCode = breweries[dataNum].phone.substr(0,3);
+    var prefix = breweries[dataNum].phone.substr(3,3);
+    var lineNum = breweries[dataNum].phone.substr(6,4);
     $('#brewery').text(breweries[dataNum].name);
     $('#address-info').html('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + breweries[dataNum].street + '<br>' + breweries[dataNum].city + ', ' + breweries[dataNum].state + ' ' + breweries[dataNum].zip + '</div>');
-    $('#phone-info').html('<div id="phone"><i class="fas fa-phone"></i>  ' + breweries[dataNum].phone + '</div>')
-    $('#website-info').html('<div id="website"><i class="fab fa-safari"></i>  ' + breweries[dataNum].url + '</div>')
+    $('#phone-info').html('<div id="phone"><i class="fas fa-phone"></i>  (' + areaCode + ') ' + prefix + '-' + lineNum + '</div>')
+    $('#website-info').html('<div id="website"><i class="fab fa-safari"></i> <a href="' + breweries[dataNum].url + '" class="text-dark" target="_blank">' + breweries[dataNum].url + '</a></div>')
+    getLocation(breweries[dataNum].street, breweries[dataNum].city, breweries[dataNum].state, breweries[dataNum].zip);
+    //dropped the following method...not all brewery locations were provided on brewery DB api...
+    //mapBox(breweries[dataNum].longitude, breweries[dataNum].latitude);
 })
 
 //I ran a bing images api search and stored 100 generic brewery object image urls in and array called images on firebase
