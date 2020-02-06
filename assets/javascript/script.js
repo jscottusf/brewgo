@@ -13,7 +13,6 @@ let randomNum;
 var startNum;
 let breweries = [];
 let breweryData = {};
-//found online...not yet being used. Want to write a function that converts state abbreviation to full state name (to increase user friendliness)
 const states = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -139,7 +138,6 @@ function searchBreweryDB() {
         if (response.length > 1) {
             header = $('<h2 id="brewery-header">There are ' + response.length + ' breweries in ' + displayCity + '</h2>');
         }
-        //not working>
         else if (response.length === 0) {
             header = $('<h1 id="brewery-header">There were no breweries found in ' + displayCity + '. Check your spelling or search another city. </h1>');
         }
@@ -213,8 +211,7 @@ $('form').on('submit', function(event) {
     if (cityAndState[1] === undefined) {
         state = "";
     }
-    else if (cityAndState[1].length === 3) {
-        state = "";
+    else if (cityAndState[1].length === 2 || cityAndState[1].length === 3) {
         var ref = cityAndState[1].trim().toUpperCase();
         state = states[ref];
     }
