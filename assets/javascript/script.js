@@ -152,8 +152,8 @@ function searchBreweryDB() {
                 var brewCard = $('<div class="mx-0 my-2 brewery-' + i + '" id="card-container" data-number="' + i + '" data-toggle="modal" data-target="#info-modal">');
                 $('#breweries').append(brewCard);
                 var zip = response[i].postal_code.substr(0,5);
-                var addressDiv = $('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + response[i].street + '<br>' + response[i].city + ', ' + response[i].state + ' ' + zip + '</div>')
-                var breweryImg = $('<img id="random-img" src="' + images[startNum].url + '" alt="brewery logo">')
+                var addressDiv = $('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + response[i].street + '<br>' + response[i].city + ', ' + response[i].state + ' ' + zip + '</div>');
+                var breweryImg = $('<img id="random-img" src="' + images[startNum].url + '" alt="brewery logo">');
                 var breweryNameH3 = $('<h3 id="brewery-name">' + response[i].name + '</h3>');
                 $(brewCard).append(breweryNameH3, addressDiv, breweryImg);
                 startNum += 1;
