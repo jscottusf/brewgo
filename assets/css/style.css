@@ -216,11 +216,15 @@ form {
     margin-top: 10px;
 }
 
+#brewery, #nearby-restaurants-h4, #map-h4 {
+    font-weight: 700;
+}
+
 #website a:hover {
     text-decoration: none;
 }
 
-#address, #phone, #website, #map-h4 {
+#address, #phone, #website, #map-h4, #nearby-restaurants-h4 {
     padding: 0px 5px; 
     margin: 0px 5px;
     margin-top: 5px;

@@ -98,9 +98,7 @@ function getLocation(address, city, state, zip) {
 
 //display brewery location on map modal
 function mapBox(long, lat) {
-    //mapbox
     mapboxgl.accessToken = mapBoxApi;
-    
     //display map according to event location
     var map = new mapboxgl.Map({
     container: 'map',
@@ -196,7 +194,6 @@ function cityCapitalization(str) {
 }
 
 //on form click
-//wrote this before I discovered encodeURI()
 $('form').on('submit', function(event) {
     event.preventDefault();
     clearBreweries();
@@ -218,7 +215,7 @@ $('form').on('submit', function(event) {
     else {
         state = cityAndState[1].trim();
     }
-    //other code will go here
+    //search breweryDB api
     searchBreweryDB();
     //scroll down to #breweries <div>
     $('html, body').animate({
@@ -282,6 +279,7 @@ database.ref().on('value', function(snapshot) {
 
 if (!Array.isArray(images)) {
 images = [];
+<<<<<<< HEAD
 }
 
 <<<<<<< HEAD
@@ -294,3 +292,6 @@ function searchZomato() {
     }).then(function(response) {});
 =======
 >>>>>>> 77e27b398421dc156390137933170bf9bccf5b9e
+=======
+}
+>>>>>>> 8c6d64babecdbe83e00232a00bd6ab577741b77d
