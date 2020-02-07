@@ -93,7 +93,7 @@ function getLocation(address, city, state, zip) {
         latitude = response.features[0].center[1];
         longitude = response.features[0].center[0];
         mapBox(longitude, latitude);
-        searchZomato(longitude,latitude);
+        searchZomato();
     });
 }
 
