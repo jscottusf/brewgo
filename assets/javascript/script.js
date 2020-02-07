@@ -75,7 +75,7 @@ const states = {
     "WY": "Wyoming"
 }
 //firebase...in keys.js
-firebaseConfig;
+// firebaseConfig;
 //Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 database = firebase.database();
@@ -290,7 +290,7 @@ var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + lat
 $.ajax({
     url: foodURL,
     headers: {
-        "user-key": "5b256502a738dbdef9eadd620cd79d8f",
+        "user-key": zomatoApi,
         "content-type": "application/json"
       },
     method: "GET"
@@ -303,17 +303,24 @@ $.ajax({
 
         var foodDiv = $("<div>");
 
-        var foodName = $("<p>").text(foodResults[f].restaurant.name);
-        var foodRate = $("<p>").text(foodResults[f].restaurant.user_rating.rating_text);
-        var foodPrice = $("<p>").text(foodResults[f].restaurant.price_range);
-        var foodAddress = $("<p>").text(foodResults[f].restaurant.location.address);
+        var foodPic = $("<img>")
+        foodPic.attr("src", foodResults[f].restaurant.thumb);
+        foodPic.attr("alt", "Restaurant Pic")
 
+        var foodName = $("<div>").text("Name: " + foodResults[f].restaurant.name);
+        var foodRate = $("<div>").text("People who eat here say its " + foodResults[f].restaurant.user_rating.rating_text);
+        var foodPrice = $("<div>").text("Pricing 1-5 (1 lowest 5 highest): " + foodResults[f].restaurant.price_range);
+        var foodAddress = $("<div>").text(foodResults[f].restaurant.location.address);
+
+        foodDiv.addClass("food-div")
+
+        foodDiv.append(foodPic);
         foodDiv.append(foodName);
         foodDiv.append(foodAddress);
         foodDiv.append(foodRate);
         foodDiv.append(foodPrice);
 
-        $("nearby-restaurants").append(foodDiv);
+        $("#nearby-restaurants").append(foodDiv);
 
     }
 })}
