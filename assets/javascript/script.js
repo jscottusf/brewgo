@@ -75,7 +75,7 @@ const states = {
     "WY": "Wyoming"
 }
 //firebase...in keys.js
-firebaseConfig;
+// firebaseConfig;
 //Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 database = firebase.database();
@@ -93,6 +93,7 @@ function getLocation(address, city, state, zip) {
         latitude = response.features[0].center[1];
         longitude = response.features[0].center[0];
         mapBox(longitude, latitude);
+        searchZomato();
     });
 }
 
@@ -281,15 +282,15 @@ if (!Array.isArray(images)) {
 images = [];
 
 }
-// var brewLat = "47.6717282"
-// var brewLong = "-122.1967629"
 
-// var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + brewLat + "&lon=" + brewLong + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
+function searchZomato(){
+
+var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + latitude + "&lon=" + longitude + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
 
 $.ajax({
-    url: "https://developers.zomato.com/api/v2.1/search?count=5&lat=47.6717282&lon=-122.1967629&radius=2500",
+    url: foodURL,
     headers: {
-        "user-key": "5b256502a738dbdef9eadd620cd79d8f",
+        "user-key": zomatoApi,
         "content-type": "application/json"
       },
     method: "GET"
@@ -302,15 +303,24 @@ $.ajax({
 
         var foodDiv = $("<div>");
 
-        var foodName = $("<p>").text(foodResults[f].restaurant.name);
-        var foodRate = $("<p>").text(foodResults[f].restaurant.user_rating.rating_text);
-        var foodPrice = $("<p>").text(foodResults[f].restaurant.price_range);
-        var foodAddress = $("<p>").text(foodResults[f].restaurant.location.address);
+        var foodPic = $("<img>")
+        foodPic.attr("src", foodResults[f].restaurant.thumb);
+        foodPic.attr("alt", "Restaurant Pic")
 
+        var foodName = $("<div>").text("Name: " + foodResults[f].restaurant.name);
+        var foodRate = $("<div>").text("People who eat here say its " + foodResults[f].restaurant.user_rating.rating_text);
+        var foodPrice = $("<div>").text("Pricing 1-5 (1 lowest 5 highest): " + foodResults[f].restaurant.price_range);
+        var foodAddress = $("<div>").text(foodResults[f].restaurant.location.address);
+
+        foodDiv.addClass("food-div")
+
+        foodDiv.append(foodPic);
         foodDiv.append(foodName);
         foodDiv.append(foodAddress);
         foodDiv.append(foodRate);
         foodDiv.append(foodPrice);
 
+        $("#nearby-restaurants").append(foodDiv);
+
     }
-})
+})}
