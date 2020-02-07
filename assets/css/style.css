@@ -218,7 +218,7 @@ form {
     text-decoration: none;
 }
 
-#address, #phone, #website, #map-h4, #nearby-restaurants-h4 {
+#address, #phone, #website, #map-h4, #nearby-restaurants-h4, #nearby-restaurants {
     padding: 0px 5px; 
     margin: 0px 5px;
     margin-top: 5px;
