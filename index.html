@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,17 @@
     <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
     <!--Moment.js-->
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    <!--MapBox--><script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+    <!--MapBox-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
     <!--Bootstrap-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <!--Fonts-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 </head>
@@ -45,7 +48,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-            <h2 class="recommended-cities-header">Featured Craft Beer Cities</h2> 
+                <h2 class="recommended-cities-header">Featured Craft Beer Cities</h2>
             </div>
         </div>
         <div class="row" id="recommended-cities">
@@ -59,7 +62,7 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="city-container" id ="Raleigh" data-city="Raleigh" data-state="North Carolina">
+                <div class="city-container" id="Raleigh" data-city="Raleigh" data-state="North Carolina">
                     <img src="./assets/images/raleigh.jpg">
                     <div class="recommended">
                         <h4 class="city">Raleigh</h4>
@@ -75,7 +78,7 @@
                         <p>Michigan</p>
                     </div>
                 </div>
-                </div>
+            </div>
             <div class="col-sm-3">
                 <div class="city-container" id="Portland" data-city="Portland" data-state="Oregon">
                     <img src="./assets/images/portland.jpg">
@@ -86,11 +89,11 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
     <!--Modal card layout will go here...JS code will append info from APIs-->
     <!-- Modal -->
-    <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+    <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" id="modal-card">
                 <div class="modal-header">
@@ -110,7 +113,9 @@
                     <h4 id="nearby-restaurants-h4">Nearby Restaurants</h4>
                     <div id="nearby-restaurants"></div>
                     <hr>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit cupiditate culpa repellendus facilis laboriosam animi, perspiciatis nihil quibusdam suscipit vero quod, harum veniam perferendis quis nisi alias ipsa quidem. Perspiciatis.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit cupiditate culpa repellendus facilis
+                    laboriosam animi, perspiciatis nihil quibusdam suscipit vero quod, harum veniam perferendis quis
+                    nisi alias ipsa quidem. Perspiciatis.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -118,22 +123,27 @@
             </div>
         </div>
     </div>
-      
 
-    
     <br><br>
     <footer class="footer bg-white">
         <div class="container">
             <span>Alan Ford | Bryan Wise | Joel Scott | © 2020</a></span>
         </div>
     </footer>
-    
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- JQuery/Javascript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://kit.fontawesome.com/61f75f2d8a.js" crossorigin="anonymous"></script>
     <script src="./assets/javascript/keys.js"></script>
     <script src="./assets/javascript/script.js"></script>
 </body>
+
 </html>
