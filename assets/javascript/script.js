@@ -281,12 +281,36 @@ if (!Array.isArray(images)) {
 images = [];
 
 }
+// var brewLat = "47.6717282"
+// var brewLong = "-122.1967629"
 
+// var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + brewLat + "&lon=" + brewLong + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
 
-function searchZomato() {
-    var foodURL = 'https://developers.zomato.com/api/v2.1/search?lat=' + breweryLat + '&lon=' + breweryLon + '&radius=2500';
-    console.log(foodURL);
-    $.ajax({
-        url: foodURL,
-        type: "GET", 
-    }).then(function(response) {})};
+$.ajax({
+    url: "https://developers.zomato.com/api/v2.1/search?count=5&lat=47.6717282&lon=-122.1967629&radius=2500",
+    headers: {
+        "user-key": "5b256502a738dbdef9eadd620cd79d8f",
+        "content-type": "application/json"
+      },
+    method: "GET"
+}).then(function(foodR) {
+    console.log(foodR);
+
+    var foodResults = foodR.restaurants;
+
+    for (var f = 0; f < foodResults.length; f++) {
+
+        var foodDiv = $("<div>");
+
+        var foodName = $("<p>").text(foodResults[f].restaurant.name);
+        var foodRate = $("<p>").text(foodResults[f].restaurant.user_rating.rating_text);
+        var foodPrice = $("<p>").text(foodResults[f].restaurant.price_range);
+        var foodAddress = $("<p>").text(foodResults[f].restaurant.location.address);
+
+        foodDiv.append(foodName);
+        foodDiv.append(foodAddress);
+        foodDiv.append(foodRate);
+        foodDiv.append(foodPrice);
+
+    }
+})
