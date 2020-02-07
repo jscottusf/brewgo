@@ -93,6 +93,7 @@ function getLocation(address, city, state, zip) {
         latitude = response.features[0].center[1];
         longitude = response.features[0].center[0];
         mapBox(longitude, latitude);
+        searchZomato(longitude,latitude);
     });
 }
 
@@ -281,13 +282,13 @@ if (!Array.isArray(images)) {
 images = [];
 
 }
-// var brewLat = "47.6717282"
-// var brewLong = "-122.1967629"
 
-// var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + brewLat + "&lon=" + brewLong + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
+function searchZomato(){
+
+var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + latitude + "&lon=" + longitude + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
 
 $.ajax({
-    url: "https://developers.zomato.com/api/v2.1/search?count=5&lat=47.6717282&lon=-122.1967629&radius=2500",
+    url: foodURL,
     headers: {
         "user-key": "5b256502a738dbdef9eadd620cd79d8f",
         "content-type": "application/json"
@@ -312,5 +313,7 @@ $.ajax({
         foodDiv.append(foodRate);
         foodDiv.append(foodPrice);
 
+        $("nearby-restaurants").append(foodDiv);
+
     }
-})
+})}
