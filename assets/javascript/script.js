@@ -279,19 +279,14 @@ database.ref().on('value', function(snapshot) {
 
 if (!Array.isArray(images)) {
 images = [];
-<<<<<<< HEAD
+
 }
 
-<<<<<<< HEAD
+
 function searchZomato() {
     var foodURL = 'https://developers.zomato.com/api/v2.1/search?lat=' + breweryLat + '&lon=' + breweryLon + '&radius=2500';
     console.log(foodURL);
     $.ajax({
         url: foodURL,
         type: "GET", 
-    }).then(function(response) {});
-=======
->>>>>>> 77e27b398421dc156390137933170bf9bccf5b9e
-=======
-}
->>>>>>> 8c6d64babecdbe83e00232a00bd6ab577741b77d
+    }).then(function(response) {})};
