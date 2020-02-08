@@ -92,13 +92,6 @@ form {
     grid-gap: 15px;
 }
 
-.contact-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-}
-
-
 /* Featured Cities */
 #card-container {
     width: 100%;
@@ -212,6 +205,18 @@ form {
 
 #brewery, #nearby-restaurants-h4, #map-h4 {
     font-weight: 700;
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+
+#nearby-restaurants {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
 }
 
 #website a:hover {
