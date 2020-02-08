@@ -73,7 +73,7 @@ const states = {
     "WV": "West Virginia",
     "WI": "Wisconsin",
     "WY": "Wyoming"
-}
+};
 //firebase...in keys.js
 // firebaseConfig;
 //Initialize Firebase
@@ -120,6 +120,48 @@ function mapBox(long, lat) {
     });
 }
 
+//serach zamato for nearby restaurants
+function searchZomato(){
+    var foodURL = 'https://developers.zomato.com/api/v2.1/search?q=food&count=10&lat=' + latitude + '&lon=' + longitude + '&radius=2500&establishment_type=restaurant&sort=real_distance&order=asc';
+    $.ajax({
+        url: foodURL,
+        headers: {
+            "user-key": zomatoApi,
+            "content-type": "application/json"
+        },
+        method: "GET"
+    }).then(function(foodR) {
+        console.log(foodR.restaurants);
+        var foodResults = foodR.restaurants;
+        console.log(foodResults);
+        //added .empty because the restaurants were appending repeatedly while app was in use and adding five restaurants with every click
+        $("#nearby-restaurants").empty();
+        for (var f = 0; f < foodResults.length; f++) {
+            var foodDiv = $("<div id='foodDiv'>");
+            var foodPic = $("<img width='300px'>");
+            var foodImg;
+            if (foodResults[f].restaurant.thumb === "") {
+                foodImg = "./assets/images/restaurant.jpg";
+            }
+            else {
+                foodImg = foodResults[f].restaurant.thumb;
+            }
+            foodPic.attr("src", foodImg);
+            foodPic.attr("alt", "Restaurant Pic")
+            var foodName = $("<div>").text("Name: " + foodResults[f].restaurant.name);
+            var foodRate = $("<div>").text("People who eat here say its " + foodResults[f].restaurant.user_rating.rating_text);
+            var foodPrice = $("<div>").text("Pricing 1-5 (1 lowest 5 highest): " + foodResults[f].restaurant.price_range);
+            var foodAddress = $("<div>").text(foodResults[f].restaurant.location.address);
+            foodDiv.addClass("food-div")
+            foodDiv.append(foodPic);
+            foodDiv.append(foodName);
+            foodDiv.append(foodAddress);
+            foodDiv.append(foodRate);
+            foodDiv.append(foodPrice);
+            $("#nearby-restaurants").append(foodDiv);
+        }
+    });
+}
 
 //search breweryDB API
 function searchBreweryDB() {
@@ -129,7 +171,7 @@ function searchBreweryDB() {
         url: queryURL,
         type: "GET", 
     }).then(function(response) {
-        //clear breweryies array
+        //clear breweries array
         breweries = [];
         console.log(response.length);
         var breweriesDiv = ('<div class="col-lg-12" id="breweries">');
@@ -172,7 +214,7 @@ function searchBreweryDB() {
                 var breweryLat = response[i].latitude;
                 var breweryPhone = response[i].phone;
                 var breweryUrl = response[i].website_url;
-                breweryData = {"name": breweryName, "street": breweryStreet, "city": breweryCity, "state": breweryState, "zip": zip, "longitude": breweryLong, "latitude": breweryLat, "phone": breweryPhone, "url": breweryUrl}
+                breweryData = {"name": breweryName, "street": breweryStreet, "city": breweryCity, "state": breweryState, "zip": zip, "longitude": breweryLong, "latitude": breweryLat, "phone": breweryPhone, "url": breweryUrl};
                 breweries.push(breweryData);
             }
         }
@@ -280,47 +322,4 @@ database.ref().on('value', function(snapshot) {
 
 if (!Array.isArray(images)) {
 images = [];
-
 }
-
-function searchZomato(){
-
-var foodURL = "https://developers.zomato.com/api/v2.1/search?count=5&lat=" + latitude + "&lon=" + longitude + "&radius=2500&api_key=5b256502a738dbdef9eadd620cd79d8f"
-
-$.ajax({
-    url: foodURL,
-    headers: {
-        "user-key": zomatoApi,
-        "content-type": "application/json"
-      },
-    method: "GET"
-}).then(function(foodR) {
-    console.log(foodR);
-
-    var foodResults = foodR.restaurants;
-
-    for (var f = 0; f < foodResults.length; f++) {
-
-        var foodDiv = $("<div>");
-
-        var foodPic = $("<img>")
-        foodPic.attr("src", foodResults[f].restaurant.thumb);
-        foodPic.attr("alt", "Restaurant Pic")
-
-        var foodName = $("<div>").text("Name: " + foodResults[f].restaurant.name);
-        var foodRate = $("<div>").text("People who eat here say its " + foodResults[f].restaurant.user_rating.rating_text);
-        var foodPrice = $("<div>").text("Pricing 1-5 (1 lowest 5 highest): " + foodResults[f].restaurant.price_range);
-        var foodAddress = $("<div>").text(foodResults[f].restaurant.location.address);
-
-        foodDiv.addClass("food-div")
-
-        foodDiv.append(foodPic);
-        foodDiv.append(foodName);
-        foodDiv.append(foodAddress);
-        foodDiv.append(foodRate);
-        foodDiv.append(foodPrice);
-
-        $("#nearby-restaurants").append(foodDiv);
-
-    }
-})}
