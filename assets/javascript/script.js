@@ -180,7 +180,7 @@ function searchZomato(){
             else if (foodRating > 3.5 && foodRating < 4.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
             }
-            else if (foodRating > 4.5) {
+            else if (foodRating >= 4.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i>';
             }
             var restaurantData = {"name" : restaurantName, "street" : restaurantAddress, "menu" : menu, "img": foodImg, "rating": foodRating, "price": foodPrice};
