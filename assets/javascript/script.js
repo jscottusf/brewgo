@@ -171,13 +171,13 @@ function searchZomato(){
             if (foodRating < 1.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
             }
-            else if (foodRating > 1.5 && foodRating < 2.5) {
+            else if (foodRating >= 1.5 && foodRating < 2.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
             }
-            else if (foodRating > 2.5 && foodRating < 3.5) {
+            else if (foodRating >= 2.5 && foodRating < 3.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
             }
-            else if (foodRating > 3.5 && foodRating < 4.5) {
+            else if (foodRating >= 3.5 && foodRating < 4.5) {
                 foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
             }
             else if (foodRating >= 4.5) {
