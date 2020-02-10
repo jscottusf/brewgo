@@ -158,7 +158,7 @@ function searchZomato(){
                 foodPrice = "$$";
             }
             else if (foodPrice === 3) {
-                foodPrice = "$$$$";
+                foodPrice = "$$$";
             }
             else if (foodPrice === 4) {
                 foodPrice = "$$$$";
