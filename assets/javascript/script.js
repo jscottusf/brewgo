@@ -5,14 +5,17 @@ let city = "";
 let state = "";
 let displayCity = "";
 let displayCount = 9;
+var foodDisplayCount;
 let header;
 let imageURL;
 let breweryImage = {};
 let images;
 let randomNum;
 var startNum;
-let breweries = [];
+let breweries;
 let breweryData = {};
+let restaurants;
+let restaurantData = {};
 const states = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -89,7 +92,6 @@ function getLocation(address, city, state, zip) {
         url: locationSearch,
         method: "GET",
     }).then(function(response) {
-        console.log(response);
         latitude = response.features[0].center[1];
         longitude = response.features[0].center[0];
         mapBox(longitude, latitude);
@@ -122,7 +124,7 @@ function mapBox(long, lat) {
 
 //serach zamato for nearby restaurants
 function searchZomato(){
-    var foodURL = 'https://developers.zomato.com/api/v2.1/search?q=food&count=10&lat=' + latitude + '&lon=' + longitude + '&radius=2500&establishment_type=restaurant&sort=real_distance&order=asc';
+    var foodURL = 'https://developers.zomato.com/api/v2.1/search?q=food&count=20&lat=' + latitude + '&lon=' + longitude + '&radius=2500&establishment_type=restaurant&sort=real_distance&order=asc';
     $.ajax({
         url: foodURL,
         headers: {
@@ -131,14 +133,15 @@ function searchZomato(){
         },
         method: "GET"
     }).then(function(foodR) {
-        console.log(foodR.restaurants);
         var foodResults = foodR.restaurants;
-        console.log(foodResults);
         //added .empty because the restaurants were appending repeatedly while app was in use and adding five restaurants with every click
         $("#nearby-restaurants").empty();
+        restaurants = [];
+        foodDisplayCount = 0;
         for (var f = 0; f < foodResults.length; f++) {
-            var foodDiv = $("<div id='foodDiv'>");
-            var foodPic = $("<img width='300px'>");
+            var restaurantName = foodResults[f].restaurant.name;
+            var restaurantAddress = foodResults[f].restaurant.location.address;
+            var menu = foodResults[f].restaurant.menu_url;
             var foodImg;
             if (foodResults[f].restaurant.thumb === "") {
                 foodImg = "./assets/images/restaurant.jpg";
@@ -146,21 +149,76 @@ function searchZomato(){
             else {
                 foodImg = foodResults[f].restaurant.thumb;
             }
-            foodPic.attr("src", foodImg);
-            foodPic.attr("alt", "Restaurant Pic")
-            var foodName = $("<div>").text("Name: " + foodResults[f].restaurant.name);
-            var foodRate = $("<div>").text("People who eat here say its " + foodResults[f].restaurant.user_rating.rating_text);
-            var foodPrice = $("<div>").text("Pricing 1-5 (1 lowest 5 highest): " + foodResults[f].restaurant.price_range);
-            var foodAddress = $("<div>").text(foodResults[f].restaurant.location.address);
-            foodDiv.addClass("food-div")
-            foodDiv.append(foodPic);
-            foodDiv.append(foodName);
-            foodDiv.append(foodAddress);
-            foodDiv.append(foodRate);
-            foodDiv.append(foodPrice);
-            $("#nearby-restaurants").append(foodDiv);
+            var foodPrice = foodResults[f].restaurant.price_range;
+            //convert value into $$$$
+            if (foodPrice === 1) {
+                foodPrice = "$";
+            }
+            else if (foodPrice === 2) {
+                foodPrice = "$$";
+            }
+            else if (foodPrice === 3) {
+                foodPrice = "$$$";
+            }
+            else if (foodPrice === 4) {
+                foodPrice = "$$$$";
+            }
+            else if (foodPrice === 5) {
+                foodPrice = "$$$$$";
+            }
+            var foodRating = foodResults[f].restaurant.user_rating.aggregate_rating;
+            //convert rating into thumbs up symbols
+            if (foodRating < 1.5) {
+                foodRating = '<i class="fas fa-thumbs-up"> </i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
+            }
+            else if (foodRating >= 1.5 && foodRating < 2.5) {
+                foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
+            }
+            else if (foodRating >= 2.5 && foodRating < 3.5) {
+                foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
+            }
+            else if (foodRating >= 3.5 && foodRating < 4.5) {
+                foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="far fa-thumbs-up"></i>';
+            }
+            else if (foodRating >= 4.5) {
+                foodRating = '<i class="fas fa-thumbs-up"> </i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-up"></i>';
+            }
+            var restaurantData = {"name" : restaurantName, "street" : restaurantAddress, "menu" : menu, "img": foodImg, "rating": foodRating, "price": foodPrice};
+            restaurants.push(restaurantData);
         }
+        showRestaurants();
     });
+}
+
+//display two restaurants at a time from restaurants array
+function showRestaurants() {
+    console.log(restaurants);
+    $("#nearby-restaurants").empty();
+    for (k = foodDisplayCount; k < (foodDisplayCount + 2); k++) {
+        var foodDiv = $("<div>");
+        var foodPic = $("<img width='300px'>");
+        foodPic.attr("src", restaurants[k].img);
+        foodPic.attr("alt", "Restaurant Pic");
+        foodPic.addClass("card-img-top");
+        var foodNameDiv = $("<h4>").text(restaurants[k].name);
+        var foodRateDiv = $("<div>").html(restaurants[k].rating);
+        var foodPriceDiv = $("<div>").text(restaurants[k].price);
+        var foodAddressDiv = $("<div>").text(restaurants[k].street);
+        var menuLink = $('<div><i class="fas fa-utensils"></i> <a href="' + restaurants[k].menu + '" class="text-dark" target="_blank">Menu</a></div>')
+        foodAddressDiv.prepend('<i class="fas fa-map-marker-alt"></i>  ');
+        var cardBody = $("<div>");
+        foodDiv.addClass("food-div card")
+        cardBody.addClass("card-body");
+        foodDiv.css("width: 18rem;");
+        cardBody.append(foodNameDiv);
+        cardBody.append(foodAddressDiv);
+        cardBody.append(menuLink);
+        cardBody.append(foodRateDiv);
+        cardBody.append(foodPriceDiv);
+        foodDiv.append(foodPic);
+        foodDiv.append(cardBody);
+        $("#nearby-restaurants").append(foodDiv);
+    }
 }
 
 //search breweryDB API
@@ -292,7 +350,7 @@ $('html, body').on('click', '#more-beer', function(event) {
     displayCity;
     displayCount += 3;
     searchBreweryDB();
-})
+});
 
 $('#brewery-list').on('click', '#card-container', function(event) {
     event.preventDefault();
@@ -302,12 +360,33 @@ $('#brewery-list').on('click', '#card-container', function(event) {
     var lineNum = breweries[dataNum].phone.substr(6,4);
     $('#brewery').text(breweries[dataNum].name);
     $('#address-info').html('<div id="address"><i class="fas fa-map-marker-alt"></i> ' + breweries[dataNum].street + '<br>' + breweries[dataNum].city + ', ' + breweries[dataNum].state + ' ' + breweries[dataNum].zip + '</div>');
-    $('#phone-info').html('<div id="phone"><i class="fas fa-phone"></i>  (' + areaCode + ') ' + prefix + '-' + lineNum + '</div>')
-    $('#website-info').html('<div id="website"><i class="fab fa-safari"></i> <a href="' + breweries[dataNum].url + '" class="text-dark" target="_blank">' + breweries[dataNum].url + '</a></div>')
+    $('#phone-info').html('<div id="phone"><i class="fas fa-phone"></i>  (' + areaCode + ') ' + prefix + '-' + lineNum + '</div>');
+    $('#website-info').html('<div id="website"><i class="fab fa-safari"></i> <a href="' + breweries[dataNum].url + '" class="text-dark" target="_blank">' + breweries[dataNum].url + '</a></div>');
     getLocation(breweries[dataNum].street, breweries[dataNum].city, breweries[dataNum].state, breweries[dataNum].zip);
     //dropped the following method...not all brewery locations were provided on brewery DB api...
     //mapBox(breweries[dataNum].longitude, breweries[dataNum].latitude);
-})
+});
+
+//restaurants scroll left
+$('.modal-body').on('click', '.left', function(event) {
+    event.preventDefault();
+    foodDisplayCount -= 2;
+    if (foodDisplayCount < 0) {
+        foodDisplayCount = (restaurants.length - 2);
+    }
+    showRestaurants();
+
+});
+
+//restaurants scroll right
+$('.modal-body').on('click', '.right', function(event) {
+    event.preventDefault();
+    foodDisplayCount += 2;
+    if (foodDisplayCount >= restaurants.length) {
+        foodDisplayCount = 0;
+    }
+    showRestaurants();
+});
 
 //I ran a bing images api search and stored 100 generic brewery object image urls in and array called images on firebase
 //There images generate randomly at the top of each brewery card
