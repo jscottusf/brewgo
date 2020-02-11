@@ -77,9 +77,21 @@ const states = {
     "WI": "Wisconsin",
     "WY": "Wyoming"
 };
-//firebase...in keys.js
+
 // firebaseConfig;
 //Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyBlv1hM_Yfh-sCVDgq3crNmKP1BVv5xC4o",
+    authDomain: "brewgoimages.firebaseapp.com",
+    databaseURL: "https://brewgoimages.firebaseio.com",
+    projectId: "brewgoimages",
+    storageBucket: "brewgoimages.appspot.com",
+    messagingSenderId: "969778384720",
+    appId: "1:969778384720:web:c70762ced17a0e269f6655"
+};
+const mapBoxApi = 'pk.eyJ1IjoianNjb3R0dXNmIiwiYSI6ImNrNjFpbWEydjAxbjgzam9hZTgyd3hoN3QifQ.tUiC-b5WfvxUJuYp49Vqzw';
+const zomatoApi = '5b256502a738dbdef9eadd620cd79d8f';
+
 firebase.initializeApp(firebaseConfig);
 database = firebase.database();
 
@@ -352,6 +364,7 @@ $('html, body').on('click', '#more-beer', function(event) {
     searchBreweryDB();
 });
 
+//on brewery card click, append info to modal
 $('#brewery-list').on('click', '#card-container', function(event) {
     event.preventDefault();
     var dataNum = $(this).attr('data-number');
