@@ -32,4 +32,4 @@ APIs:
 -Open Brewery DB API
 
 
-BrewGo webapp deployed at : https://jscottusf.github.io/BrewGo/
+BrewGo webapp deployed at : https://jscottusf.github.io/brewgo/
