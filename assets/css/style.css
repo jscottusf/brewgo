@@ -106,6 +106,13 @@ form {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.container-recommended-cities {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+}
+
 .recommended {
     position: absolute;
     bottom: 0;
@@ -271,4 +278,128 @@ form {
     height: 60px; /* Set the fixed height of the footer here */
     line-height: 60px; /* Vertically center the text there */
     text-align: center;
+}
+
+/* max width 992px */
+@media screen and (max-width: 992px) {
+    .container-recommended-cities {
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 20px;
+    }
+
+    #breweries {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .jumbotron {
+        padding: 150px;
+        padding-top: 150px;
+    }
+}
+
+@media screen and (max-width: 915px) {
+    form {
+        flex-direction: column;
+    }
+    .search-bar {
+        background-color: transparent;
+        height: auto;
+    }
+    .location-search {
+        width: 100%;
+        border: 0;
+        border-radius: 10px;
+        background-color: white;
+        margin-bottom: 20px;
+    }
+    .search-input {
+        width: 85%;
+    }
+    .location-search i {
+        margin-right: 27px;
+    }
+    .search-button {
+        width: 100%;
+        border-radius: 20px;
+        height: 45px;
+    }
+}
+  
+/* max width 768px */
+@media screen and (max-width: 768px) {
+    .container-recommended-cities {
+        grid-template-columns: 1fr;
+    }
+
+    #breweries {
+        grid-template-columns: 1fr;
+    }
+
+    #brewery-name {
+        min-height: 150px;
+    }
+
+    #random-img {
+        height: 180px;
+    }
+
+    #brewery-name {
+        font-size: 40px;
+    }
+
+    .jumbotron {
+        padding: 100px;
+        padding-top: 150px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .modal {
+        padding-right: 0!important;
+    }
+    .modal-body {
+        padding: 20px 35px;
+    }
+}
+
+@media screen and (max-width: 640) {
+    .jumbotron {
+        padding: 50px;
+        padding-top: 150px;
+    }
+
+    #brewery {
+        font-size: 5px;
+    }
+
+    .contact-container i {
+        size: 100px;
+    }
+}
+
+@media screen and (max-width: 583px) {
+    .search-input {
+        width: 80%;
+    }
+    .search-bar i {
+        margin-right: 10px;
+    }
+    .location-search i {
+        margin-right: 15px;
+    }
+    #map {
+        height: 300px;
+    }
+    .jumbotron {
+        padding: 10px;
+        padding-top: 150px;
+    }
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    #nearby-restaurants {
+        grid-template-columns: 1fr;
+    }
 }
