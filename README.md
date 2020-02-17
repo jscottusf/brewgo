@@ -4,7 +4,7 @@
 
 ## Purpose: Providing a resource for people to look up breweries in their area and cross reference restaurants in the same area
 - Can be a resource for people who travel often
-- Also valuable resource for craft beer drinkings searching for breweries in their hometown or in nearby towns and cities
+- Also valuable resource for craft beer drinkers searching for breweries in their hometown or in nearby towns and cities
 
 ## Functionality:
 - User enters city or city and state
